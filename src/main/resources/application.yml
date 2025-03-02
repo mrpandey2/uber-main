@@ -1,0 +1,23 @@
+spring:
+ application:
+  name: uber
+
+ datasource:
+  url: jdbc:mysql://localhost:3306/uber
+  username: root
+  password: Prashu@12345
+  driver-class-name: com.mysql.cj.jdbc.Driver
+
+ jpa:
+  hibernate:
+   ddl-auto: update
+  show-sql: true
+  properties:
+   hibernate:
+    format_sql: true
+
+
+ sql:
+  init:
+   mode: always
+   data-locations: classpath:data.sql
