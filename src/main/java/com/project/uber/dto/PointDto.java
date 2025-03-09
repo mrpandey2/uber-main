@@ -13,4 +13,7 @@ public class PointDto {
     private double[] coordinates;
     private String type = "Points";
 
+    public PointDto(double[] coordinates) {
+        this.coordinates = coordinates;
+    }
 }
