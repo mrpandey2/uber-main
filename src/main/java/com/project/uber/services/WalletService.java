@@ -20,4 +20,6 @@ public interface WalletService {
     Wallet findByUser(User user);
 
     Wallet createNewWallet(User user);
+
+    String generateTransactionId();
 }

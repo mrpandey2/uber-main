@@ -20,13 +20,17 @@ public class PaymentServiceImpl implements PaymentService {
     @Override
     public void processPayment(Ride ride) {
 
-        Payment payment = paymentRepository.findByRide(ride).orElseThrow(()-> new ResourceNotFoundException("Payment not found!"));
+        try {
 
-        paymentStrategyManager
-                .paymentStrategy(payment.getPaymentMethod())
-                .processPayment(payment);
+            Payment payment = paymentRepository.findByRide(ride).orElseThrow(() -> new ResourceNotFoundException("Payment not found!"));
+            paymentStrategyManager
+                    .paymentStrategy(payment.getPaymentMethod())
+                    .processPayment(payment);
 
-        updatePaymentStatus(payment, PaymentStatus.CONFIRMED);
+            updatePaymentStatus(payment, PaymentStatus.CONFIRMED);
+        }catch (ResourceNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

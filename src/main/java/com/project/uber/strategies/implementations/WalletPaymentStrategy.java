@@ -26,16 +26,18 @@ public class WalletPaymentStrategy implements PaymentStrategy {
         Rider rider = payment.getRide().getRider();
 
         double paymentAddedToWallet = payment.getAmount() - (payment.getAmount() * PLATFORM_FEE);
+        String driverTransactionId= walletService.generateTransactionId();
+        String riderTransactionId= walletService.generateTransactionId();
 
         walletService.addMoneyToWallet(driver.getUser(),
                 paymentAddedToWallet,
-                null,
+                driverTransactionId,
                 payment.getRide(),
                 TransactionMethod.RIDE);
 
         walletService.subtractMoneyFromWallet(rider.getUser(),
                 payment.getAmount(),
-                null,
+                riderTransactionId,
                 payment.getRide(),
                 TransactionMethod.RIDE);
 

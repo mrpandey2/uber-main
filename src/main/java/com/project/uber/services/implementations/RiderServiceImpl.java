@@ -47,27 +47,30 @@ public class RiderServiceImpl implements RiderService {
     public RideRequestDto requestRide(RideRequestDto rideRequestDto) {
 
         Rider rider = getCurrentRider();
-        RideRequest rideRequest = modelMapper.map(rideRequestDto,RideRequest.class);
-        rideRequest.setStatus(RideRequestStatus.PENDING);
+        try {
+            RideRequest rideRequest = modelMapper.map(rideRequestDto, RideRequest.class);
+            rideRequest.setStatus(RideRequestStatus.PENDING);
 
-        Double fare = rideFareCalculationStrategyManager
-                .rideFareCalculation()
-                .calculateFare(rideRequest);
-        rideRequest.setFare(fare);
+            Double fare = rideFareCalculationStrategyManager
+                    .rideFareCalculation()
+                    .calculateFare(rideRequest);
+            rideRequest.setFare(fare);
 
-        rideRequest.setRider(rider);
-        RideRequest savedRideRequest = rideRequestRepository.save(rideRequest);
+            rideRequest.setRider(rider);
+            RideRequest savedRideRequest = rideRequestRepository.save(rideRequest);
 
-        List<Driver> matchingDrivers = driverMatchingStrategyManager
-                .driverMatchingStrategy(rider.getRating())
-                .findMatchingDrivers(rideRequest);
-        String[] emails = matchingDrivers.stream()
-                .map(driver -> driver.getUser().getEmail())
-                .toArray(String[]::new);
-        notificationService.sendEmail(emails, "New Ride Request", "A new ride request is available. Please check your app.");
-
-        return modelMapper.map(savedRideRequest,RideRequestDto.class);
-
+            List<Driver> matchingDrivers = driverMatchingStrategyManager
+                    .driverMatchingStrategy(rider.getRating())
+                    .findMatchingDrivers(rideRequest);
+            String[] emails = matchingDrivers.stream()
+                    .map(driver -> driver.getUser().getEmail())
+                    .toArray(String[]::new);
+            notificationService.sendEmail(emails, "New Ride Request", "A new ride request is available. Please check your app.");
+            return modelMapper.map(savedRideRequest,RideRequestDto.class);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException("Failed to request a ride please try again later");
+        }
     }
 
     @Override

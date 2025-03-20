@@ -8,6 +8,10 @@ DELETE FROM rider;
 DELETE FROM user;
 DELETE FROM wallet;
 DELETE FROM ride;
+DELETE FROM payment;
+DELETE FROM rating;
+DELETE FROM ride_request;
+DELETE FROM wallet_transaction;
 
 --Reset auto increment
 ALTER TABLE user AUTO_INCREMENT = 1;
@@ -15,17 +19,19 @@ ALTER TABLE driver AUTO_INCREMENT = 1;
 ALTER TABLE rider AUTO_INCREMENT = 1;
 ALTER TABLE wallet AUTO_INCREMENT = 1;
 ALTER TABLE ride AUTO_INCREMENT = 1;
+ALTER TABLE ride_request AUTO_INCREMENT = 1;
 
 --Alter column to define SRID 4326
 ALTER TABLE driver MODIFY current_location POINT NOT NULL SRID 4326;
-
+DROP INDEX idx_current_location ON driver;
+CREATE SPATIAL INDEX idx_current_location ON driver(current_location);
 --Insert data
 INSERT INTO user (name, email, password) VALUES
-('Aarav Sharma', 'aarav@gmail.com', 'Password'),
-('Vivaan Khanna', 'vivaan.khanna@example.com', '$2a$10$examplePasswordHash2'),
-('Aditya Verma', 'aditya.verma@example.com', '$2a$10$examplePasswordHash3'),
+('Aarav Sharma', 'aarav@gmail.com', '$2a$12$8GNZS2I/76.msjy5ImtwXuGVGJWc3yu/BNoYWwzjqJAbZSr.K2w1m'),
+('Vivaan Khanna', 'vivaan.khanna@example.com', '$2a$10$KL0SEmP7GeooK16cLSU/n.av7JjP6CJg8fcpIElQsa3ZEiyrSttTO.2BTNXOfGbgvOu9yI.nrHmdXa4gwOy2O'),
+('Aditya Verma', 'pandeyprashantganesh@gmail.com', '$2a$12$q.W7WzjMQHaHat0tKHlfjeVyiAQwNa0lTetlbYSj1ZrGEnJbqR4vK'),
 ('Vihaan Kapoor', 'vihaan.kapoor@example.com', '$2a$10$examplePasswordHash4'),
-('Arjun Patel', 'arjun.patel@example.com', '$2a$10$examplePasswordHash5'),
+('Arjun Patel', 'pandeyprashantganesh525@gmail.com', '$2a$10$examplePasswordHash5'),
 ('Sai Reddy', 'sai.reddy@example.com', '$2a$10$examplePasswordHash6'),
 ('Ananya Nair', 'ananya.nair@example.com', '$2a$10$examplePasswordHash7'),
 ('Ishaan Thakur', 'ishaan.thakur@example.com', '$2a$10$examplePasswordHash8'),
@@ -63,7 +69,8 @@ INSERT INTO user (name, email, password) VALUES
 ('Tarun Sharma', 'tarun.sharma@example.com', '$2a$10$examplePasswordHash40');
 
 INSERT INTO user_roles (user_id, roles) VALUES
-(1, 'RIDER'),
+(1, 'ADMIN'),
+(1,'RIDER'),
 (2, 'RIDER'),
 (2, 'DRIVER'),
 (3, 'RIDER'),
@@ -144,7 +151,7 @@ INSERT INTO user_roles (user_id, roles) VALUES
 (40, 'DRIVER');
 
 INSERT INTO rider (user_id, rating) VALUES
-(1, 4.9),
+(1,5.0),
 (2, 4.7),
 (3, 4.8),
 (4, 4.6),
@@ -187,7 +194,6 @@ INSERT INTO rider (user_id, rating) VALUES
 
 
 INSERT INTO driver (user_id, rating, available, current_location, vehicle_id) VALUES
-(1, 4.5, 1, ST_GeomFromText('POINT(79.15 28.741)', 4326), 1001),
 (2, 4.7, 1, ST_GeomFromText('POINT(77.1025 28.7041)', 4326), 1002),
 (3, 4.8, 1, ST_GeomFromText('POINT(77.2167 28.6667)', 4326), 1003),
 (4, 4.6, 1, ST_GeomFromText('POINT(77.2273 28.6353)', 4326), 1004),
@@ -263,3 +269,6 @@ VALUES
 (ST_GeomFromText('POINT(-73.6457 40.5884)', 4326), ST_GeomFromText('POINT(-73.6351 40.5789)', 4326), '2024-12-27T04:00:00', 1, 2, 'CASH', 'ONGOING', 33.00, '100011', '2024-12-27T04:05:00', NULL),
 (ST_GeomFromText('POINT(-73.6257 40.5784)', 4326), ST_GeomFromText('POINT(-73.6151 40.5689)', 4326), '2024-12-27T05:00:00', 1, 2, 'WALLET', 'CONFIRMED', 26.50, '112233', '2024-12-27T05:05:00', '2024-12-27T05:30:00');
 
+--Shantanu@gmail.com Shantanu@12345
+--  aarav@gmail.com  password
+--  aditya.verma@example.com password

@@ -42,6 +42,7 @@ public class Driver {
     private boolean available;
 
     @Column(columnDefinition = "POINT SRID 4326")
+    @Type(type = "jts_geometry")
     private Point currentLocation;
 
     @Column(nullable = false)

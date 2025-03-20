@@ -5,8 +5,10 @@ import com.project.uber.entities.RideRequest;
 import com.project.uber.repositories.DriverRepository;
 import com.project.uber.strategies.DriverMatchingStrategy;
 import lombok.AllArgsConstructor;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
+import java.time.Duration;
 import java.util.List;
 
 @Service
@@ -18,6 +20,7 @@ public class DriverMatchingNearestDrivers implements DriverMatchingStrategy {
 
     @Override
     public List<Driver> findMatchingDrivers(RideRequest rideRequest) {
-        return driverRepository.findTenNearestDrivers(rideRequest.getPickUpLocation());
+        String pickupPointWkt = String.format("POINT(%f %f)", rideRequest.getPickUpLocation().getX(), rideRequest.getPickUpLocation().getY());
+        return driverRepository.findTenNearestDrivers(pickupPointWkt);
     }
 }

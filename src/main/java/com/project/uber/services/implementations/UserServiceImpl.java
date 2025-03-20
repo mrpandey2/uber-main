@@ -7,6 +7,7 @@ import org.springframework.security.authentication.AuthenticationCredentialsNotF
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -18,10 +19,16 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return userRepository
-                .findByEmail(username)
-                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+        try {
+            return userRepository
+                    .findByEmail(username)
+                    .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+        } catch (Exception e) {
+            e.printStackTrace(); // 🔍 This will show the REAL root cause in console
+            throw e;
+        }
     }
 
     @Override

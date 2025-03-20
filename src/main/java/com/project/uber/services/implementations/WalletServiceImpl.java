@@ -13,6 +13,8 @@ import com.project.uber.services.WalletTransactionService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.UUID;
+
 @Service
 public class WalletServiceImpl implements WalletService {
 
@@ -129,5 +131,12 @@ public class WalletServiceImpl implements WalletService {
         wallet.setUser(user);
         wallet.setBalance(1000D);
         return walletRepository.save(wallet);
+    }
+
+    @Override
+    public String generateTransactionId() {
+        String uuid=UUID.randomUUID().toString().substring(0,8);
+        String timeStamp=String.valueOf(System.currentTimeMillis());
+        return "TRAN"+uuid+timeStamp;
     }
 }

@@ -1,5 +1,7 @@
 package com.project.uber.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.project.uber.dto.RiderDto;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
@@ -29,4 +31,5 @@ public class Rider {
     @Min(value = 0, message = "Rating cannot be less than 0")
     @Max(value = 5, message = "Rating cannot be more than 5")
     private Double rating;
+
 }

@@ -1,5 +1,6 @@
 package com.project.uber.entities;
 
+import com.project.uber.dto.PointDto;
 import com.project.uber.entities.enums.PaymentMethod;
 import com.project.uber.entities.enums.RideRequestStatus;
 import jakarta.persistence.*;

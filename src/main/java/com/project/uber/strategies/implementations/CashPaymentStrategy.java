@@ -24,7 +24,7 @@ public class CashPaymentStrategy implements PaymentStrategy {
 
         walletService.subtractMoneyFromWallet(driver.getUser(),
                 paymentCommission,
-                null, // Cash on delivery payments do not have transaction ids
+                walletService.generateTransactionId(), // Cash on delivery payments do not have transaction ids
                 payment.getRide(),
                 TransactionMethod.RIDE);
     }
