@@ -99,7 +99,8 @@ public class DriverServiceImpl implements DriverService {
 
         ride.setEndedAt(LocalDateTime.now());
         Ride savedRide = rideService.updateRideStatus(ride, RideStatus.ENDED);
-        updateDriverAvailability(driver, true);
+        driver.setCurrentLocation(ride.getDropOffLocation());
+        Driver savedDriver=updateDriverAvailability(driver, true);
         paymentService.processPayment(savedRide);
         return modelMapper.map(savedRide, DriverRideDto.class);
     }
